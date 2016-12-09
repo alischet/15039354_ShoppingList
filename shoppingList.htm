@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+				<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+				<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+				<script type="text/javascript" src="http://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"></script>
+			</head>
+			<body>
+
+				<script>
+					var chosenItems = {};
+					var listCreated = false;
+					var counter = "0";
+
+					$( document ).ready(function() {
+					
+					
+					var q = localStorage.getItem("viewShoppingLists");
+					if (q!=null) chosenItems = JSON.parse(q);
+					appendToList();
+					});
+
+
+					function appendToList(){
+
+					if ($("#newShoppingList").val()!="")  saveChoice();
+
+					//iterate through the dictionary chosenItems
+					$("ul").empty();
+					for (var key in chosenItems) {
+					listName = chosenItems[key];
+					
+					$('<li>').append('<a href="#">' + listName + '</a>').appendTo('#shoppingLists');
+						}
+						$("#shoppingLists").listview('refresh');
+
+
+						//	var value = $("#newShoppingList").val();
+						//var listItem = "<li><a>" + value + "</a></li>";
+						//var listItem2 = "<li><a onclick='gotoQuantity(this)'>" + value + "</a></li>"
+						//$("#shoppingLists").append(listItem2);
+						//$("#shoppingLists").listview('refresh');
+
+
+
+						//save shopping lists in memory
+						// localStorage.setItem("shoppingLists",JSON.stringify(chosenItems));
+
+						}
+
+						function saveChoice()
+						{
+						   if (Object.keys(chosenItems).length == "0")
+						    {
+						    }
+						   else
+						    {
+						    counter = Object.keys(chosenItems).length + "1";
+						    }
+
+						shoppingListAdd = $("#newShoppingList").val();
+						chosenItems[counter] = shoppingListAdd;
+						localStorage.setItem("viewShoppingLists",JSON.stringify(chosenItems));
+						}
+					</script>
+
+					<div data-role="page" id="pageone">
+						<div data-role="main" class="ui-content">
+							<h2>Add Shopping List</h2>
+							<form class="">
+								<input id="newShoppingList" placeholder="Add a new shopping list" />
+								<input type="button" value="Add" onclick="appendToList()" />
+							</form>
+
+							<h2>My Shopping Lists</h2>
+							<form class="ui-filterable">
+								<input id="myFilter" data-type="search">
+								</form>
+								<ul data-role="listview" data-filter="true" id="shoppingLists" data-input="#myFilter" data-autodividers="true" data-inset="true">
+
+								</ul>
+							</div>
+						</div> 
+					</body>
+				</html>
