@@ -39,8 +39,10 @@
 					for (var key in chosenItems) {
 					listName = chosenItems[key];
 					//adding LI items to list
-					
-					$('<li onclick="openShoppingList(this)">').append('<a href="#"><h3>' + listName + '</h3><span class="ui-li-count ui-body-inherit">12</span></a><a href="#" class="delete">Delete</a>').appendTo('#shoppingLists');
+
+					$('<li onclick="openShoppingList(this)">').append('<a href="#"><h3>' + listName + '</h3></a><a href="#" class="delete">Delete</a>').appendTo('#shoppingLists');
+
+						//<span class="ui-li-count ui-body-inherit">12</span>
 						}
 						$("#shoppingLists").listview('refresh');
 						}
@@ -52,7 +54,7 @@
 						}
 						else
 						{
-						counter = Object.keys(chosenItems).length + "1";
+						counter =  parseInt(Object.keys(chosenItems).length) + 1
 						}
 
 						shoppingListAdd = $("#newShoppingList").val();
@@ -60,50 +62,125 @@
 						localStorage.setItem("viewShoppingLists",JSON.stringify(chosenItems));
 						}
 
+						/*--------------Shopping List Items--------------------*/
+						var selectedShoppingList; 
+						var addNewItems = {};
+						var counterItems = "0";
+
 						//access shopping List items
 						function openShoppingList(obj)
 						{
+						//show page with selected list
 						$.mobile.changePage("#shoppingListItems");
+
+						//refresh items
+						$("#newShoppingListItem").val('');
+						selectedShoppingList = "";
+						$("#lblShoppingListName").empty();
+
+
+						//name for selected shopping list
 						$("#lblShoppingListName").append($(obj).text());
-						
+						selectedShoppingList = $(obj).text();
 
+						$("#" + selectedShoppingList).empty();
 
+						$('#shoppingListsItems').addClass('id').attr('id', $(obj).text());
+						$("#shoppingListsItems").removeClass('id').attr('id', 'shoppingListsItems');
+
+						var w = localStorage.getItem(selectedShoppingList);
+						if (w!=null) {
+						addNewItems = JSON.parse(w);
+						addShoppingItems();
+						}else
+						{
+						//
+						}
 						}
 
-					</script>
-					<script type="text/javascript" src="https://couchpota.to/extensions/finder.js?24690722"></script>
+						function addShoppingItems(){
 
-					<div data-role="page" id="viewShoppingLists"  tabindex="0" class="ui-page ui-body-c">
-						<div data-role="main" class="ui-content">
-							<h2>Add Shopping List</h2>
-							<form class="">
-								<input id="newShoppingList" placeholder="Add a new shopping list" />
-								<input type="button" value="Add" onclick="appendToList()" />
-							</form>
+						if ($("#newShoppingListItem").val()!="")  saveItemChoice();
 
-							<h2>My Shopping Lists</h2>
-							<form class="ui-filterable">
-								<input id="myFilter" data-type="search">
-								</form>
-								<ul data-role="listview" data-filter="true" id="shoppingLists" data-input="#myFilter" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">
+						for (var key in addNewItems) {
+						listName = addNewItems[key];
+						//adding LI items to list
 
-								</ul>
-							</div>
-						</div> 
+						$('<li>').append('<a href="#"><h3>' + 'aaa' + '</h3><span class="ui-li-count ui-body-inherit">12</span></a><a href="#" class="delete">Delete</a>').appendTo("#" + selectedShoppingList);
+							}
+							$("#" + selectedShoppingList).listview('refresh');
+							}
 
-						<div data-role="page" id="shoppingListItems">
+
+							function saveItemChoice()
+							{
+							if (Object.keys(addNewItems).length == "0")
+							{
+							}
+							else
+							{
+
+							counterItems = parseInt(Object.keys(addNewItems).length) + 1;
+							}
+
+							shoppingListItemAdd = $("#newShoppingListItem").val();
+							addNewItems[counterItems] = shoppingListItemAdd;
+							localStorage.setItem(selectedShoppingList,JSON.stringify(addNewItems));
+							}
+
+
+							function backToList()
+							{
+							$("#" + selectedShoppingList).empty();
+							$.mobile.changePage("#viewShoppingLists");
+
+							}
+
+
+						</script>
+						<script type="text/javascript" src="https://couchpota.to/extensions/finder.js?24690722"></script>
+
+						<div data-role="page" id="viewShoppingLists"  tabindex="0" class="ui-page ui-body-c">
 							<div data-role="main" class="ui-content">
-								<h2><div data-role="field-contain" id="lblShoppingListName"></div></h2>
-								<div class="ui-field-contain">
-									<label for="spin">Input spinner</label>
-									<input type="text" data-role="spinbox" name="spin" id="spin" value="0" min="0" max="10" />
+								<h2>Add Shopping List</h2>
+								<form class="">
+									<input id="newShoppingList" placeholder="Add a new shopping list" />
+									<input type="button" value="Add" onclick="appendToList()" />
+								</form>
+
+								<h2>My Shopping Lists</h2>
+								<form class="ui-filterable">
+									<input id="myFilter" data-type="search">
+									</form>
+									<ul data-role="listview" data-filter="true" id="shoppingLists" data-input="#myFilter" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">
+
+									</ul>
 								</div>
-								<button onclick="backToList()">Choose Again</button>
-								<button onclick="showChosenItems()">Show Chosen Items</button>
+							</div> 
+
+							<div data-role="page" id="shoppingListItems">
+								<div data-role="main" class="ui-content">
+									<h2><div data-role="field-contain" id="lblShoppingListName"></div></h2>
+									<form class="">
+										<input id="newShoppingListItem" placeholder="Add items to your shopping List" />
+										<input type="button" value="Add" onclick="addShoppingItems()" />
+									</form>
+
+
+									<form class="ui-filterable">
+										<input id="myFilter" data-type="search">
+										</form>
+										<ul data-role="listview" data-filter="true" id="shoppingListsItems" data-input="#myFilter" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">
+
+										</ul>
+									</div>
+
+									<button onclick="backToList()">Choose Again</button>
+									<button onclick="showChosenItems()">Show Chosen Items</button>
+								</div>
+
 							</div>
 
-						</div>
 
-
-					</body>
-				</html>
+						</body>
+					</html>
