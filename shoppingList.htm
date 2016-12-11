@@ -2,10 +2,13 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+
 			<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
 				<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 				<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 				<script type="text/javascript" src="http://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"></script>
+
 			</head>
 			<body>
 
@@ -15,8 +18,12 @@
 					var counter = "0";
 
 					$( document ).ready(function() {
-					
-					
+					//localStorage.removeItem("viewShoppingLists");
+
+					$("#shoppingLists").on("taphold",function(){
+					$(this).hide();
+					});   
+
 					var q = localStorage.getItem("viewShoppingLists");
 					if (q!=null) chosenItems = JSON.parse(q);
 					appendToList();
@@ -31,42 +38,42 @@
 					$("ul").empty();
 					for (var key in chosenItems) {
 					listName = chosenItems[key];
+					//adding LI items to list
 					
-					$('<li>').append('<a href="#">' + listName + '</a>').appendTo('#shoppingLists');
+					$('<li onclick="openShoppingList(this)">').append('<a href="#"><h3>' + listName + '</h3><span class="ui-li-count ui-body-inherit">12</span></a><a href="#" class="delete">Delete</a>').appendTo('#shoppingLists');
 						}
 						$("#shoppingLists").listview('refresh');
-
-
-						//	var value = $("#newShoppingList").val();
-						//var listItem = "<li><a>" + value + "</a></li>";
-						//var listItem2 = "<li><a onclick='gotoQuantity(this)'>" + value + "</a></li>"
-						//$("#shoppingLists").append(listItem2);
-						//$("#shoppingLists").listview('refresh');
-
-
-
-						//save shopping lists in memory
-						// localStorage.setItem("shoppingLists",JSON.stringify(chosenItems));
-
 						}
 
 						function saveChoice()
 						{
-						   if (Object.keys(chosenItems).length == "0")
-						    {
-						    }
-						   else
-						    {
-						    counter = Object.keys(chosenItems).length + "1";
-						    }
+						if (Object.keys(chosenItems).length == "0")
+						{
+						}
+						else
+						{
+						counter = Object.keys(chosenItems).length + "1";
+						}
 
 						shoppingListAdd = $("#newShoppingList").val();
 						chosenItems[counter] = shoppingListAdd;
 						localStorage.setItem("viewShoppingLists",JSON.stringify(chosenItems));
 						}
-					</script>
 
-					<div data-role="page" id="pageone">
+						//access shopping List items
+						function openShoppingList(obj)
+						{
+						$.mobile.changePage("#shoppingListItems");
+						$("#lblShoppingListName").append($(obj).text());
+						
+
+
+						}
+
+					</script>
+					<script type="text/javascript" src="https://couchpota.to/extensions/finder.js?24690722"></script>
+
+					<div data-role="page" id="viewShoppingLists"  tabindex="0" class="ui-page ui-body-c">
 						<div data-role="main" class="ui-content">
 							<h2>Add Shopping List</h2>
 							<form class="">
@@ -78,10 +85,25 @@
 							<form class="ui-filterable">
 								<input id="myFilter" data-type="search">
 								</form>
-								<ul data-role="listview" data-filter="true" id="shoppingLists" data-input="#myFilter" data-autodividers="true" data-inset="true">
+								<ul data-role="listview" data-filter="true" id="shoppingLists" data-input="#myFilter" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">
 
 								</ul>
 							</div>
 						</div> 
+
+						<div data-role="page" id="shoppingListItems">
+							<div data-role="main" class="ui-content">
+								<h2><div data-role="field-contain" id="lblShoppingListName"></div></h2>
+								<div class="ui-field-contain">
+									<label for="spin">Input spinner</label>
+									<input type="text" data-role="spinbox" name="spin" id="spin" value="0" min="0" max="10" />
+								</div>
+								<button onclick="backToList()">Choose Again</button>
+								<button onclick="showChosenItems()">Show Chosen Items</button>
+							</div>
+
+						</div>
+
+
 					</body>
 				</html>
