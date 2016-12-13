@@ -2,143 +2,16 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-			<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-
-				<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-				<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-				<script type="text/javascript" src="http://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"></script>
-
-			</head>
-			<body>
-
-				<script>
-					var chosenItems = {};
-					var listCreated = false;
-					var counter = "0";
-
-					$( document ).ready(function() {
-					//localStorage.removeItem("viewShoppingLists");
-
-					$("#shoppingLists").on("taphold",function(){
-					$(this).hide();
-					});   
-
-					var q = localStorage.getItem("viewShoppingLists");
-					if (q!=null) chosenItems = JSON.parse(q);
-					appendToList();
-					});
-
-
-					function appendToList(){
-
-					if ($("#newShoppingList").val()!="")  saveChoice();
-
-					//iterate through the dictionary chosenItems
-					$("ul").empty();
-					for (var key in chosenItems) {
-					listName = chosenItems[key];
-					//adding LI items to list
-
-					$('<li onclick="openShoppingList(this)">').append('<a href="#"><h3>' + listName + '</h3></a><a href="#" class="delete">Delete</a>').appendTo('#shoppingLists');
-
-						//<span class="ui-li-count ui-body-inherit">12</span>
-						}
-						$("#shoppingLists").listview('refresh');
-						}
-
-						function saveChoice()
-						{
-						if (Object.keys(chosenItems).length == "0")
-						{
-						}
-						else
-						{
-						counter =  parseInt(Object.keys(chosenItems).length) + 1
-						}
-
-						shoppingListAdd = $("#newShoppingList").val();
-						chosenItems[counter] = shoppingListAdd;
-						localStorage.setItem("viewShoppingLists",JSON.stringify(chosenItems));
-						}
-
-						/*--------------Shopping List Items--------------------*/
-						var selectedShoppingList; 
-						var addNewItems = {};
-						var counterItems = "0";
-
-						//access shopping List items
-						function openShoppingList(obj)
-						{
-						//show page with selected list
-						$.mobile.changePage("#shoppingListItems");
-
-						//refresh items
-						$("#newShoppingListItem").val('');
-						selectedShoppingList = "";
-						$("#lblShoppingListName").empty();
-
-
-						//name for selected shopping list
-						$("#lblShoppingListName").append($(obj).text());
-						selectedShoppingList = $(obj).text();
-
-						$("#" + selectedShoppingList).empty();
-
-						$('#shoppingListsItems').addClass('id').attr('id', $(obj).text());
-						$("#shoppingListsItems").removeClass('id').attr('id', 'shoppingListsItems');
-
-						var w = localStorage.getItem(selectedShoppingList);
-						if (w!=null) {
-						addNewItems = JSON.parse(w);
-						addShoppingItems();
-						}else
-						{
-						//
-						}
-						}
-
-						function addShoppingItems(){
-
-						if ($("#newShoppingListItem").val()!="")  saveItemChoice();
-
-						for (var key in addNewItems) {
-						listName = addNewItems[key];
-						//adding LI items to list
-
-						$('<li>').append('<a href="#"><h3>' + 'aaa' + '</h3><span class="ui-li-count ui-body-inherit">12</span></a><a href="#" class="delete">Delete</a>').appendTo("#" + selectedShoppingList);
-							}
-							$("#" + selectedShoppingList).listview('refresh');
-							}
-
-
-							function saveItemChoice()
-							{
-							if (Object.keys(addNewItems).length == "0")
-							{
-							}
-							else
-							{
-
-							counterItems = parseInt(Object.keys(addNewItems).length) + 1;
-							}
-
-							shoppingListItemAdd = $("#newShoppingListItem").val();
-							addNewItems[counterItems] = shoppingListItemAdd;
-							localStorage.setItem(selectedShoppingList,JSON.stringify(addNewItems));
-							}
-
-
-							function backToList()
-							{
-							$("#" + selectedShoppingList).empty();
-							$.mobile.changePage("#viewShoppingLists");
-
-							}
-
-
-						</script>
-						<script type="text/javascript" src="https://couchpota.to/extensions/finder.js?24690722"></script>
+     	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="http://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="js/Main.js"></script>
+	</head>
+	<body>
+	
 
 						<div data-role="page" id="viewShoppingLists"  tabindex="0" class="ui-page ui-body-c">
 							<div data-role="main" class="ui-content">
@@ -161,21 +34,21 @@
 							<div data-role="page" id="shoppingListItems">
 								<div data-role="main" class="ui-content">
 									<h2><div data-role="field-contain" id="lblShoppingListName"></div></h2>
-									<form class="">
+									
 										<input id="newShoppingListItem" placeholder="Add items to your shopping List" />
 										<input type="button" value="Add" onclick="addShoppingItems()" />
-									</form>
+								
 
 
 									<form class="ui-filterable">
-										<input id="myFilter" data-type="search">
+										<input id="filterShoppingItems" data-type="search">
 										</form>
-										<ul data-role="listview" data-filter="true" id="shoppingListsItems" data-input="#myFilter" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">
+										<ul data-role="listview" data-filter="true" id="shoppingListsItems" data-input="#filterShoppingItems" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">
 
 										</ul>
 									</div>
 
-									<button onclick="backToList()">Choose Again</button>
+									<button onclick="backToList()">Back to Shopping Lists</button>
 									<button onclick="showChosenItems()">Show Chosen Items</button>
 								</div>
 
