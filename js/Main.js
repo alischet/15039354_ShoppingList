@@ -77,9 +77,11 @@
 						selectedShoppingList = $(obj).text();
 
 						$("#" + selectedShoppingList).empty();
+                        $("#shoppingListsItems").empty();
 
-						$('#shoppingListsItems').addClass('id').attr('id', $(obj).text());
-						$("#shoppingListsItems").removeClass('id').attr('id', 'shoppingListsItems');
+						//rename 
+						//$('#shoppingListsItems').addClass('id').attr('id', $(obj).text());
+						//$("#shoppingListsItems").removeClass('id').attr('id', 'shoppingListsItems');
 
 						var w = localStorage.getItem(selectedShoppingList);
 						if (w!=null) {
@@ -98,10 +100,12 @@
 						for (var key in addNewItems) {
 						listName = addNewItems[key];
 						//adding LI items to list
+						
+						var checkbox = "<div class=\"checkBoxLeft\"><input type=\"checkbox\" id=\"item" + counterItems + "\" class=\"box\"></div>";
 
-						$('<li>').append('<a href="#"><h3>' + listName + '</h3><span class="ui-li-count ui-body-inherit">12</span></a><a href="#" class="delete">Delete</a>').appendTo("#" + selectedShoppingList);
+						$('<li>').append('<a href="#">' + checkbox + '<h3>' + listName + '</h3><span class="ui-li-count ui-body-inherit">12</span></a><a href="#" class="delete">Delete</a>').appendTo("#shoppingListsItems");
 							}
-							$("#" + selectedShoppingList).listview('refresh');
+							$("#shoppingListsItems").listview('refresh');
 							}
 
 
