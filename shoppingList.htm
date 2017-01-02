@@ -9,12 +9,13 @@
 		<script type="text/javascript" src="http://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="js/Main.js"></script>
+		<link rel="stylesheet" href="style.css">
 		<style>
 		.checkBoxLeft{
           position: absolute; 
           left: 1px; 
 		  padding: 10px;
-          top: 40%;
+          top: 15%;
 }
 		</style>
 	</head>
@@ -45,10 +46,7 @@
 									
 										<input id="newShoppingListItem" placeholder="Add items to your shopping List" />
 										<input type="button" value="Add" onclick="addShoppingItems()" />
-								
-
-
-									<form class="ui-filterable">
+																	<form class="ui-filterable">
 										<input id="filterShoppingItems" data-type="search">
 										</form>
 										<ul data-role="listview" data-filter="true" id="shoppingListsItems" data-input="#filterShoppingItems" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">

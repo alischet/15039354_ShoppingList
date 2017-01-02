@@ -2,6 +2,8 @@
 					var chosenItems = {};
 					var listCreated = false;
 					var counter = "0";
+					
+	
 
 					$( document ).ready(function() {
 					//localStorage.removeItem("viewShoppingLists");
@@ -9,12 +11,27 @@
 					$("#shoppingLists").on("taphold",function(){
 					$(this).hide();
 					});   
+					
+					$("#shoppingListsItems").on("click","li", function(){
+                      // $(this).parent().css("background-color", "yellow");
+					  // alert("Hello");
+					   $(this).closest("li").toggleClass("checked");
+					   $(this).closest("li").find("input").toggle(this.checked);
+					});
+					
+					$(".edit").on("click", "span", function() {
+		                $(".cross").toggle();
+	                 });
 
 					var q = localStorage.getItem("viewShoppingLists");
 					if (q!=null) chosenItems = JSON.parse(q);
 					appendToList();
 					});
+					
+					
 
+					
+					
 
 	/*----------------------------- Shopping Lists ------------------------------------- */
 					
@@ -102,8 +119,10 @@
 						//adding LI items to list
 						
 						var checkbox = "<div class=\"checkBoxLeft\"><input type=\"checkbox\" id=\"item" + counterItems + "\" class=\"box\"></div>";
+						
+						$('<li>').append(checkbox + '<h3 class="itemRight">' + listName + '</h3>').appendTo("#shoppingListsItems");
 
-						$('<li>').append('<a href="#">' + checkbox + '<h3>' + listName + '</h3><span class="ui-li-count ui-body-inherit">12</span></a><a href="#" class="delete">Delete</a>').appendTo("#shoppingListsItems");
+						
 							}
 							$("#shoppingListsItems").listview('refresh');
 							}
@@ -132,6 +151,20 @@
 							$.mobile.changePage("#viewShoppingLists");
 
 							}
+							
+							//tick off item for li 
+							function tickOffItem()
+					        {
+							 $(this).parent().css("background-color", "yellow");
+						    }
+							
+							function editButton() {
+	$(".edit").on("click", "span", function() {
+		$(".cross").toggle();
+	});
+}
+
+
 
 							//autocomplete shopping list items
 							$( function() {

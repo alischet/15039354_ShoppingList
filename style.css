@@ -1,0 +1,24 @@
+.checked {
+position: relative;
+}
+.checked::after {
+content: '';
+border-bottom: 1px solid silver;
+position: absolute;
+left: 0;
+top: 55%;
+width: 50%;
+}
+
+h3
+{
+  margin-left: 20px !important;
+}
+
+.checkBoxLeft{
+          position: absolute; 
+          left: 1px; 
+		  padding: 10px;
+          top: 15%;
+          }
+		  
