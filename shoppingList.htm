@@ -10,14 +10,19 @@
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="js/Main.js"></script>
 		<link rel="stylesheet" href="style.css">
-		<style>
-		.checkBoxLeft{
-          position: absolute; 
-          left: 1px; 
-		  padding: 10px;
-          top: 15%;
-}
-		</style>
+		<script type="text/javascript">
+				var tableToExcel = (function() {
+					var uri = 'data:application/vnd.ms-excel;base64,'
+					, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+					, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+					, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+				    return function(table, name) {
+					if (!table.nodeType) table = document.getElementById(table)
+			     	var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+					window.location.href = uri + base64(format(template, ctx))
+				}	
+				})()
+				</script>
 	</head>
 	<body>
 	
@@ -25,9 +30,13 @@
 						<div data-role="page" id="viewShoppingLists"  tabindex="0" class="ui-page ui-body-c">
 							<div data-role="main" class="ui-content">
 								<h2>Add Shopping List</h2>
-								<form class="">
-									<input id="newShoppingList" placeholder="Add a new shopping list" />
-									<input type="button" value="Add" onclick="appendToList()" />
+								<form style="width:100%;">
+									<table style="width:100%;">
+									<tr>
+									<td style="width:97%;"><input id="newShoppingList" placeholder="Add a new shopping list" /></td>
+									<td><input type="button" value="Add" onclick="appendToList()" /></td>
+									</tr>
+									</table>
 								</form>
 
 								<h2>My Shopping Lists</h2>
@@ -44,18 +53,34 @@
 								<div data-role="main" class="ui-content">
 									<h2><div data-role="field-contain" id="lblShoppingListName"></div></h2>
 									
-										<input id="newShoppingListItem" placeholder="Add items to your shopping List" />
-										<input type="button" value="Add" onclick="addShoppingItems()" />
+										<table style="width: 100%;">
+				<tr>
+				<td style="width:89%">
+				<input id="newShoppingListItem" placeholder="Add items to your shopping List" style="width:90%" />
+				</td>
+				<td><div class=""><input type="text" id="txtQuantity" name="quantity" value="1" class="qty" style="margin-bottom: 0px !important"></div></td>
+				<td><input type="button" value="-" class="qtyminus ui-button ui-corner-all ui-widget" field="quantity" role="button"></td>
+				<td><input type="button" value="+" class="qtyplus ui-button ui-corner-all ui-widget" field="quantity" role="button"></td>
+				<td><input type="button" value="Add" onclick="addShoppingItems()" /></td>
+				</tr>
+				
+				</table>
+				
+										
 																	<form class="ui-filterable">
 										<input id="filterShoppingItems" data-type="search">
 										</form>
+										
+										
+										
 										<ul data-role="listview" data-filter="true" id="shoppingListsItems" data-input="#filterShoppingItems" data-autodividers="true" data-inset="true" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d">
 
 										</ul>
 									</div>
 
 									<button onclick="backToList()">Back to Shopping Lists</button>
-									<button onclick="showChosenItems()">Show Chosen Items</button>
+									<button onclick="tableToExcel('shoppingListsItems', 'Export List Table')">Export List</button>
+									
 								</div>
 
 							</div>

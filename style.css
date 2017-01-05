@@ -3,11 +3,12 @@ position: relative;
 }
 .checked::after {
 content: '';
-border-bottom: 1px solid silver;
+border-bottom: 5px solid silver;
 position: absolute;
 left: 0;
 top: 55%;
-width: 50%;
+width: 100%;
+
 }
 
 h3
